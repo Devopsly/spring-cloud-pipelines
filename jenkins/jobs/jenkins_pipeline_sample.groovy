@@ -60,7 +60,7 @@ parsedRepos.each {
 				environmentVariables(defaults.defaultEnvVars)
 				groovy(PipelineDefaults.groovyEnvScript)
 			}
-			parameters(PipelineDefaults.defaultParams())
+			parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 			timestamps()
 			colorizeOutput()
 			maskPasswords()
@@ -123,7 +123,7 @@ parsedRepos.each {
 		deliveryPipelineConfiguration('Test', 'Deploy to test')
 		wrappers {
 			deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
-			parameters(PipelineDefaults.defaultParams())
+			parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 			environmentVariables {
 				environmentVariables(defaults.defaultEnvVars)
 				groovy(PipelineDefaults.groovyEnvScript)
@@ -173,7 +173,7 @@ parsedRepos.each {
 		deliveryPipelineConfiguration('Test', 'Tests on test')
 		wrappers {
 			deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
-			parameters(PipelineDefaults.defaultParams())
+			parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 			parameters PipelineDefaults.smokeTestParams()
 			environmentVariables {
 				environmentVariables(defaults.defaultEnvVars)
@@ -233,7 +233,7 @@ parsedRepos.each {
 			deliveryPipelineConfiguration('Test', 'Deploy to test latest prod version')
 			wrappers {
 				deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
-				parameters(PipelineDefaults.defaultParams())
+				parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 				environmentVariables {
 					environmentVariables(defaults.defaultEnvVars)
 					groovy(PipelineDefaults.groovyEnvScript)
@@ -283,7 +283,7 @@ parsedRepos.each {
 			deliveryPipelineConfiguration('Test', 'Tests on test latest prod version')
 			wrappers {
 				deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
-				parameters(PipelineDefaults.defaultParams())
+				parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 				parameters PipelineDefaults.smokeTestParams()
 				environmentVariables {
 					environmentVariables(defaults.defaultEnvVars)
@@ -346,7 +346,7 @@ parsedRepos.each {
 		wrappers {
 			deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
 			maskPasswords()
-			parameters(PipelineDefaults.defaultParams())
+			parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 			environmentVariables {
 				environmentVariables(defaults.defaultEnvVars)
 				groovy(PipelineDefaults.groovyEnvScript)
@@ -405,7 +405,7 @@ parsedRepos.each {
 		deliveryPipelineConfiguration('Stage', 'End to end tests on stage')
 		wrappers {
 			deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
-			parameters(PipelineDefaults.defaultParams())
+			parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 			parameters PipelineDefaults.smokeTestParams()
 			environmentVariables {
 				environmentVariables(defaults.defaultEnvVars)
@@ -462,7 +462,7 @@ parsedRepos.each {
 		wrappers {
 			deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
 			maskPasswords()
-			parameters(PipelineDefaults.defaultParams())
+			parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 			environmentVariables {
 				environmentVariables(defaults.defaultEnvVars)
 				groovy(PipelineDefaults.groovyEnvScript)
@@ -524,7 +524,7 @@ parsedRepos.each {
 		deliveryPipelineConfiguration('Prod', 'Complete switch over')
 		wrappers {
 			deliveryPipelineVersion('${ENV,var="PIPELINE_VERSION"}', true)
-			parameters(PipelineDefaults.defaultParams())
+			parameters(PipelineDefaults.defaultParams(binding.variables["DOMAIN"]))
 			environmentVariables {
 				environmentVariables(defaults.defaultEnvVars)
 				groovy(PipelineDefaults.groovyEnvScript)
@@ -605,7 +605,7 @@ return envs'''
 	 * has to define the parameters on input. In order not to copy paste the params we're doing this
 	 * default params method.
 	 */
-	static Closure defaultParams() {
+	static Closure defaultParams(domain) {
 		return context {
 			booleanParam('REDOWNLOAD_INFRA', false, "If Eureka & StubRunner & CF binaries should be redownloaded if already present")
 			booleanParam('REDEPLOY_INFRA', true, "If Eureka & StubRunner binaries should be redeployed if already present")
@@ -615,7 +615,7 @@ return envs'''
 			stringParam('STUBRUNNER_GROUP_ID', 'com.example.github', "Group Id for Stub Runner used by tests")
 			stringParam('STUBRUNNER_ARTIFACT_ID', 'github-analytics-stub-runner-boot', "Artifact Id for Stub Runner used by tests")
 			stringParam('STUBRUNNER_VERSION', '0.0.1.M1', "Artifact Version for Stub Runner used by tests")
-			stringParam('DOMAIN', 'devops-experimentation.cfapps.io', "Custom domain name for you app")
+			stringParam('DOMAIN', domain, "Custom domain name for you app")
 		}
 	}
 
