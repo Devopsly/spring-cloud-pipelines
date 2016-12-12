@@ -83,6 +83,9 @@ parsedRepos.each {
 					wipeOutWorkspace()
 				}
 			}
+                        triggers {
+                                scm('*/2 * * * *')
+                        }
 		}
 		configure { def project ->
 			// Adding user email and name here instead of global settings
@@ -146,6 +149,9 @@ parsedRepos.each {
 					url(fullGitRepo)
 					branch('dev/${PIPELINE_VERSION}')
 				}
+				extensions {
+					wipeOutWorkspace()
+				}
 			}
 		}
 		steps {
@@ -193,6 +199,9 @@ parsedRepos.each {
 				remote {
 					url(fullGitRepo)
 					branch('dev/${PIPELINE_VERSION}')
+				}
+				extensions {
+					wipeOutWorkspace()
 				}
 			}
 		}
@@ -256,6 +265,9 @@ parsedRepos.each {
 						url(fullGitRepo)
 						branch('dev/${PIPELINE_VERSION}')
 					}
+				        extensions {
+					        wipeOutWorkspace()
+				        }
 				}
 			}
 			steps {
@@ -307,6 +319,9 @@ parsedRepos.each {
 						url(fullGitRepo)
 						branch('${LATEST_PROD_TAG}')
 					}
+				        extensions {
+					        wipeOutWorkspace()
+				        }
 				}
 			}
 			steps {
@@ -369,6 +384,9 @@ parsedRepos.each {
 					url(fullGitRepo)
 					branch('dev/${PIPELINE_VERSION}')
 				}
+				extensions {
+				        wipeOutWorkspace()
+				}
 			}
 		}
 		steps {
@@ -425,6 +443,9 @@ parsedRepos.each {
 				remote {
 					url(fullGitRepo)
 					branch('dev/${PIPELINE_VERSION}')
+				}
+				extensions {
+				        wipeOutWorkspace()
 				}
 			}
 		}
@@ -486,6 +507,9 @@ parsedRepos.each {
 					url(fullGitRepo)
 					branch('dev/${PIPELINE_VERSION}')
 					credentials(gitCredentials)
+				}
+				extensions {
+				        wipeOutWorkspace()
 				}
 			}
 		}
